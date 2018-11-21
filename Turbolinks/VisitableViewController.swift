@@ -20,8 +20,13 @@ open class VisitableViewController: UIViewController, Visitable {
 
     fileprivate func installVisitableView() {
         view.addSubview(visitableView)
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: [], metrics: nil, views: [ "view": visitableView ]))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: [], metrics: nil, views: [ "view": visitableView ]))
+        let margins = self.view.layoutMarginsGuide
+        NSLayoutConstraint.activate([
+            visitableView.topAnchor.constraint(equalTo: margins.topAnchor),
+            visitableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            visitableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            visitableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+        ])
     }
 
     // MARK: Visitable
@@ -50,10 +55,10 @@ open class VisitableViewController: UIViewController, Visitable {
 
     /*
      If the visitableView is a child of the main view, and anchored to its top and bottom, then it's
-     unlikely you will need to customize the layout. But more complicated view hierarchies and layout 
-     may require explicit control over the contentInset. Below is an example of setting the contentInset 
+     unlikely you will need to customize the layout. But more complicated view hierarchies and layout
+     may require explicit control over the contentInset. Below is an example of setting the contentInset
      to the layout guides.
-     
+
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         visitableView.contentInset = UIEdgeInsets(top: topLayoutGuide.length, left: 0, bottom: bottomLayoutGuide.length, right: 0)
